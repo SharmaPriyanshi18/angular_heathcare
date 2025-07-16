@@ -1,0 +1,125 @@
+.h2 {
+    font-size: 35px;
+    font-weight: 600;
+    color: #0a4f77;
+    margin-bottom: 15px;
+    text-align: center;
+    margin-top: -49px;
+  }
+
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa;
+}
+
+::ng-deep .dx-datagrid {
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  background-color: #ffffff;
+  transition: box-shadow 0.3s ease;
+}
+
+::ng-deep .dx-datagrid-header-panel {
+  background: #ffffff;
+  border-bottom: 1px solid #e1e1e1;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+::ng-deep .dx-datagrid .dx-header-row {
+  background-color: #f0f4f8;
+  font-weight: 600;
+  color: #0a4f77;
+}
+
+::ng-deep .dx-datagrid .dx-header-filter {
+  color: #007bff;
+}
+
+::ng-deep .dx-datagrid-rowsview .dx-row {
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+::ng-deep .dx-datagrid-rowsview .dx-row:hover {
+  background-color: #e3f2fd !important;
+  color: #0d47a1 !important;
+  transform: scale(1.005);
+  cursor: pointer;
+}
+
+::ng-deep .dx-datagrid-rowsview .dx-row:hover td {
+  color: #0d47a1 !important;
+}
+
+::ng-deep .dx-popup-content {
+  min-width: 500px;
+  padding: 20px !important;
+  background-color: #ffffff;
+  border-radius: 16px;
+}
+
+::ng-deep .dx-popup-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1976d2;
+  text-align: center;
+  padding: 16px;
+  background-color: #f0f4f8;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+::ng-deep .dx-form .dx-texteditor {
+  width: 100% !important;
+  min-height: 38px;
+  border-radius: 8px;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+}
+
+::ng-deep .dx-form .dx-texteditor:hover,
+::ng-deep .dx-form .dx-texteditor.dx-state-focused {
+  border-color: #1976d2;
+  box-shadow: 0 0 4px rgba(25, 118, 210, 0.25);
+}
+
+::ng-deep .dx-field-item-label {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+::ng-deep .dx-popup-content .dx-button {
+  min-width: 100px;
+  padding: 8px 16px;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+::ng-deep .dx-popup-content .dx-button-mode-contained.dx-button-success {
+  background-color: #007bff;
+  color: white;
+}
+
+::ng-deep .dx-popup-content .dx-button-mode-contained.dx-button-success:hover {
+  background-color: #0056b3;
+}
+
+::ng-deep .dx-popup-content .dx-button-mode-contained.dx-button-danger {
+  background-color: #e53935;
+  color: white;
+}
+
+::ng-deep .dx-popup-content .dx-button-mode-contained.dx-button-danger:hover {
+  background-color: #c62828;
+}
+
+::ng-deep.dx-overlay-content.dx-popup-normal.dx-popup-draggable.dx-resizable {
+    width: 599px !important;
+}
+::ng-deep .dx-overlay-wrapper.dx-popup-wrapper.dx-datagrid-edit-popup.dx-overlay-shader {
+    pointer-events: auto;
+    background-color: rgba(59, 59, 59, 0.8);
+}

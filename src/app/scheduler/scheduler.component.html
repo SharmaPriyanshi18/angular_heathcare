@@ -1,0 +1,35 @@
+<div class="scheduler-wrapper">
+  <div class="scheduler-header">
+    <h2>📅 Appointment Scheduler</h2>
+    <p>Select a date to view or manage appointments</p>
+  </div>
+
+  <div class="scheduler-card">
+    <dx-scheduler
+      [dataSource]="appointments"
+      [views]="['day', 'week', 'month']"
+      currentView="week"
+      [currentDate]="currentDate"
+      [startDayHour]="9"
+      [endDayHour]="18"
+      [editing]="{ allowAdding: true, allowUpdating: true, allowDeleting: true }"
+      [height]="650"
+      [cellDuration]="30"
+      [showAllDayPanel]="false"
+      [appointmentTemplate]="customAppointment"
+      (onAppointmentAdding)="onAppointmentAdding($event)"
+      (onAppointmentFormOpening)="onAppointmentFormOpening($event)"
+    >
+    </dx-scheduler>
+  </div>
+</div>
+
+<!-- Appointment Template (optional, looks good with this style) -->
+<ng-template #customAppointment let-data="data">
+  <div class="appointment-card">
+    <div class="appt-title">{{ data.text }}</div>
+    <div class="appt-time">
+      {{ data.startDate | date:'shortTime' }} - {{ data.endDate | date:'shortTime' }}
+    </div>
+  </div>
+</ng-template>

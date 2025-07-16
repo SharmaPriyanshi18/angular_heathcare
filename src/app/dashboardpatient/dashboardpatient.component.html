@@ -1,0 +1,116 @@
+<div class="dashboard-container">
+
+  <div class="banner">
+    <div class="banner-icon">🫁 </div>
+    <div class="banner-text">
+      <h2>Today - 20% Discount on Lung Examinations</h2>
+      <p>The Package price includes: consultation, spirometry, cardiogram</p>
+    </div>
+    <button class="know-more">Know More</button>
+  </div>
+
+  <div class="card-container">
+    <div class="card">
+      <div class="card-icon">🧑‍🦽</div>
+      <h3>Total Patients</h3>
+      <p>1245</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">👨‍⚕️</div>
+      <h3>Total Staffs</h3>
+      <p>145</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏥</div>
+      <h3>Total Surgery</h3>
+      <p>245</p>
+    </div>
+  </div>
+
+<div class="chart-section">
+  <div class="chart-block">
+    <dx-chart
+      [dataSource]="patientStats"
+      title="Patient Statistics"
+      palette="Soft"
+    >
+      <dxi-series
+        valueField="opd"
+        name="OPD"
+        type="stackedBar"
+        argumentField="month"
+      ></dxi-series>
+      <dxi-series
+        valueField="admitted"
+        name="Admitted"
+        type="stackedBar"
+        argumentField="month"
+      ></dxi-series>
+
+      <dxo-legend
+        horizontalAlignment="center"
+        verticalAlignment="bottom"
+      ></dxo-legend>
+      <dxo-tooltip [enabled]="true"></dxo-tooltip>
+    </dx-chart>
+  </div>
+
+  <div class="chart-block">
+    <dx-chart
+      [dataSource]="recoveryStats"
+      title="Recovery Statistics"
+      palette="Harmony Light"
+    >
+      <dxi-series
+        valueField="heart"
+        name="Heart"
+        type="splineArea"
+        argumentField="month"
+      ></dxi-series>
+      <dxi-series
+        valueField="fracture"
+        name="Fracture"
+        type="splineArea"
+        argumentField="month"
+      ></dxi-series>
+      <dxi-series
+        valueField="cold"
+        name="Cold"
+        type="splineArea"
+        argumentField="month"
+      ></dxi-series>
+
+      <dxo-legend
+        horizontalAlignment="center"
+        verticalAlignment="bottom"
+      ></dxo-legend>
+      <dxo-tooltip [enabled]="true"></dxo-tooltip>
+    </dx-chart>
+  </div>
+</div>
+
+  <dx-data-grid
+    [dataSource]="admittedPatients"
+    [showBorders]="true"
+    [columnAutoWidth]="true"
+    class="data-grid"
+  >
+    <dxi-column dataField="id" caption="ID"></dxi-column>
+    <dxi-column dataField="name" caption="Name"></dxi-column>
+    <dxi-column dataField="age" caption="Age"></dxi-column>
+    <dxi-column dataField="country" caption="Country"></dxi-column>
+    <dxi-column dataField="gender" caption="Gender"></dxi-column>
+  </dx-data-grid>
+
+  <div class="report-section">
+    <h4>📝 Report</h4>
+    <div class="report-item">
+      <p>🛠️ 2nd floor OPD had a broken door</p>
+      <span>10 minutes ago</span>
+    </div>
+    <div class="report-item">
+      <p>⚠️ Brownout in the Administration Room</p>
+      <span>15 minutes ago</span>
+    </div>
+  </div>
+</div>

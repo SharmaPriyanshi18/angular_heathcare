@@ -1,0 +1,82 @@
+<h2 class="dashboard-title">Healthcare Analytics</h2>
+
+<div class="summary-cards">
+  <div class="card stat-card">
+    <div class="icon-wrapper bg-blue"><i class="dx-icon-user"></i></div>
+    <div>
+      <div class="stat-label">Total Patients</div>
+      <div class="stat-value">1,204</div>
+    </div>
+  </div>
+  <div class="card stat-card">
+    <div class="icon-wrapper bg-green"><i class="dx-icon-event"></i></div>
+    <div>
+      <div class="stat-label">Appointments</div>
+      <div class="stat-value">876</div>
+    </div>
+  </div>
+  <div class="card stat-card">
+    <div class="icon-wrapper bg-purple"><i class="dx-icon-money"></i></div>
+    <div>
+      <div class="stat-label">Revenue</div>
+      <div class="stat-value">₹45,700</div>
+    </div>
+  </div>
+</div>
+
+<div class="charts-container">
+  <div class="chart-card">
+    <dx-chart
+      [dataSource]="chartData"
+      title="Monthly Revenue"
+      palette="Soft"
+      [commonSeriesSettings]="{ type: 'bar', barPadding: 0.4 }"
+      [animation]="{ enabled: true, duration: 800 }"
+    >
+      <dxi-series argumentField="month" valueField="revenue"></dxi-series>
+      <dxo-tooltip [enabled]="true"></dxo-tooltip>
+    </dx-chart>
+  </div>
+
+  <div class="chart-card">
+    <dx-pie-chart
+      [dataSource]="pieData"
+      title="Treatment Distribution"
+      palette="Vintage"
+      [innerRadius]="0.6"
+      [animation]="{ enabled: true }"
+    >
+      <dxi-series argumentField="category" valueField="value"></dxi-series>
+      <dxo-tooltip [enabled]="true"></dxo-tooltip>
+    </dx-pie-chart>
+  </div>
+
+  <div class="chart-card">
+    <dx-chart
+      [dataSource]="lineData"
+      title="Appointments Trend"
+      palette="Material"
+      [commonSeriesSettings]="{ type: 'spline' }"
+      [animation]="{ enabled: true, duration: 1000 }"
+    >
+      <dxi-series argumentField="day" valueField="appointments"></dxi-series>
+      <dxo-tooltip [enabled]="true"></dxo-tooltip>
+    </dx-chart>
+  </div>
+</div>
+
+<div class="grid-wrapper">
+  <dx-data-grid
+    class="modern-grid"
+    [dataSource]="tableData"
+    [showBorders]="false"
+    [rowAlternationEnabled]="true"
+    [hoverStateEnabled]="true"
+    [columnAutoWidth]="true"
+  >
+    <dxo-paging [pageSize]="5"></dxo-paging>
+    <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[5, 10, 20]" [showInfo]="true"></dxo-pager>
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <dxo-search-panel [visible]="true" [width]="240" placeholder="Search patients..."></dxo-search-panel>
+  </dx-data-grid>
+</div>
