@@ -15,7 +15,7 @@ export class Patient {
 }
 
 export interface Case {
-  caseId: number;
+  caseId: string; 
   title: string;
   therapistName: string;
   address: string;
@@ -76,28 +76,32 @@ export class PatientComponent implements OnInit {
     return token ? { Authorization: `Bearer ${token}` } : {};
   }
 
-loadPatients(): void {
-  this.http.get<Patient[]>('https://localhost:7209/api/Admin/patients', {
-    headers: this.getAuthHeaders()
-  }).subscribe({
-    next: (data) => {
-      this.patients = data.filter(p =>
-        !(p.userName.toLowerCase() === 'sacchu' && p.email.toLowerCase() === 'sacchu@gmail.com')
-      );
-      this.filteredPatientList = this.patients;
-    },
-    error: (err) => {
-      console.error('Failed to load patients:', err);
-    }
-  });
-}
+  loadPatients(): void {
+    this.http.get<Patient[]>('https://localhost:7209/api/Admin/patients', {
+      headers: this.getAuthHeaders()
+    }).subscribe({
+      next: (data) => {
+        this.patients = data.filter(p =>
+          !(p.userName.toLowerCase() === 'sacchu' && p.email.toLowerCase() === 'sacchu@gmail.com')
+        );
+        this.filteredPatientList = this.patients;
+      },
+      error: (err) => {
+        console.error('Failed to load patients:', err);
+      }
+    });
+  }
 
   loadCases(): void {
     this.http.get<Case[]>('https://localhost:7209/api/Disease', {
       headers: this.getAuthHeaders()
     }).subscribe({
-      next: (data) => { this.cases = data; },
-      error: (err) => { console.error('Failed to load cases:', err); }
+      next: (data) => {
+        this.cases = data;
+      },
+      error: (err) => {
+        console.error('Failed to load cases:', err);
+      }
     });
   }
 
@@ -108,7 +112,9 @@ loadPatients(): void {
       next: (data) => {
         this.titlesList = [...new Set(data.map(c => c.title))];
       },
-      error: (err) => { console.error('Failed to load titles:', err); }
+      error: (err) => {
+        console.error('Failed to load titles:', err);
+      }
     });
   }
 
@@ -119,9 +125,11 @@ loadPatients(): void {
       next: (data) => {
         this.therapistsList = data;
         this.therapistNames = data.map(t => t.name);
-        if (callback) callback(); 
+        if (callback) callback();
       },
-      error: (err) => { console.error('Failed to load therapists:', err); }
+      error: (err) => {
+        console.error('Failed to load therapists:', err);
+      }
     });
   }
 
@@ -144,7 +152,8 @@ loadPatients(): void {
           const formData = e.component.option('formData');
           const selected = this.therapistsList.find(t => t.name === args.value);
           if (selected) {
-            formData.address = selected.address;
+            formData.therapistName = selected.name; 
+            formData.address = selected.address;    
           }
         };
       }
@@ -182,7 +191,6 @@ loadPatients(): void {
 
   onRowRemoved(e: any) {
     const caseId = e.data.caseId;
-
     this.http.delete(`https://localhost:7209/api/Disease/${caseId}`, {
       headers: this.getAuthHeaders()
     }).subscribe({

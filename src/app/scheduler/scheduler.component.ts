@@ -1,4 +1,3 @@
-import { Patient } from './../patient';
 import { Component, OnInit } from '@angular/core';
 import { SchedulerService } from '../scheduler.service';
 import * as moment from 'moment';
@@ -9,12 +8,11 @@ export class Scheduler {
   dateTo!: Date;
   title!: string;
   applicationUserId!: string;
-  therapistId!: number;
+  therapistIds: string = ''; 
+  therapistNames?: string;
   userName?: string;
-  therapistName?: string;
   startDate?: Date;
   endDate?: Date;
-  text?: string;
   caseId?: number;
 }
 
@@ -31,7 +29,7 @@ export class SchedulerComponent implements OnInit {
   Patients: any[] = [];
   Cases: any[] = [];
 
-  constructor(private schedulerService: SchedulerService) { }
+  constructor(private schedulerService: SchedulerService) {}
 
   ngOnInit(): void {
     this.loadAppointments();
@@ -46,8 +44,7 @@ export class SchedulerComponent implements OnInit {
         this.appointments = data.map((item) => ({
           ...item,
           startDate: moment.utc(item.dateFrom).local().toDate(),
-          endDate: moment.utc(item.dateTo).local().toDate(),
-          text: item.title,
+          endDate: moment.utc(item.dateTo).local().toDate()
         }));
       },
       error: (err) => {
@@ -66,36 +63,10 @@ export class SchedulerComponent implements OnInit {
       }
     });
   }
-    deleteScheduler(id: number): void {
-    console.log('Attempting to delete therapist with ID:', id);
-    this.schedulerService.deleteScheduler(id).subscribe({
-      next: () => {
-        console.log('Schedule deleted');
-        this.loadAppointments();
-      },
-      error: (err) => {
-        console.error('Failed to delete Schedule:', err);
-      }
-    });
-  }
-    updatescheduler(Scheduler: Scheduler): void {
-      this.schedulerService.updateScheduler(Scheduler).subscribe({
-        next: () => {
-          console.log('Schedule updated');
-          this.loadTherapists();
-        },
-        error: (err) => {
-          console.error('Failed to update Schedule:', err);
-        }
-      });
-    }
-  
-
 
   loadPatients(): void {
     this.schedulerService.getPatients().subscribe({
       next: (data) => {
-        console.log('Patients:', data);
         this.Patients = data;
       },
       error: (err) => {
@@ -107,7 +78,6 @@ export class SchedulerComponent implements OnInit {
   loadCases(): void {
     this.schedulerService.getCases().subscribe({
       next: (data) => {
-        console.log('Cases:', data);
         this.Cases = data;
       },
       error: (err) => {
@@ -133,19 +103,25 @@ export class SchedulerComponent implements OnInit {
               editorOptions: {
                 items: this.Patients,
                 valueExpr: 'id',
-                displayExpr: 'userName', 
+                displayExpr: 'userName',
                 searchEnabled: true
               }
             },
             {
-              dataField: 'therapistId',
-              label: { text: 'Therapist' },
-              editorType: 'dxSelectBox',
+              dataField: 'therapistIds',
+              label: { text: 'Therapists' },
+              editorType: 'dxTagBox',
               editorOptions: {
                 items: this.therapists,
                 valueExpr: 'therapistId',
                 displayExpr: 'name',
-                searchEnabled: true
+                searchEnabled: true,
+                showSelectionControls: true,
+                applyValueMode: 'useButtons',
+                multiline: true,
+                placeholder: 'Select therapists...',
+                hideSelectedItems: false,
+                showClearButton: true
               }
             },
             {
@@ -165,9 +141,9 @@ export class SchedulerComponent implements OnInit {
               editorType: 'dxDateBox',
               editorOptions: {
                 type: 'datetime',
-                displayFormat: 'HH:mm',
-                useMaskBehavior: true,
-              },
+                displayFormat: 'yyyy-MM-dd HH:mm',
+                useMaskBehavior: true
+              }
             },
             {
               dataField: 'endDate',
@@ -175,12 +151,12 @@ export class SchedulerComponent implements OnInit {
               editorType: 'dxDateBox',
               editorOptions: {
                 type: 'datetime',
-                displayFormat: 'HH:mm',
-                useMaskBehavior: true,
-              },
-            },
-          ],
-        },
+                displayFormat: 'yyyy-MM-dd HH:mm',
+                useMaskBehavior: true
+              }
+            }
+          ]
+        }
       ]);
     }, 0);
   }
@@ -189,15 +165,21 @@ export class SchedulerComponent implements OnInit {
     const appt = e.appointmentData;
     e.cancel = true;
 
+    const selectedTherapistIds: number[] = appt.therapistIds || [];
+    const therapistNames = selectedTherapistIds
+      .map(id => this.therapists.find(t => t.therapistId === id)?.name)
+      .filter(name => !!name)
+      .join(', ');
+
     const newScheduler: Scheduler = {
       schedulerId: 0,
       dateFrom: appt.startDate,
       dateTo: appt.endDate,
-      title:this.Cases.find(c => c.caseId === appt.caseId)?.title ||   '',
+      title: this.Cases.find(c => c.caseId === appt.caseId)?.title || '',
       applicationUserId: appt.applicationUserId,
-      therapistId: appt.therapistId,
-      userName: appt.userName || '',
-      therapistName: this.therapists.find(t => t.therapistId === appt.therapistId)?.name || '',
+      therapistIds: selectedTherapistIds.join(','), 
+      therapistNames: therapistNames,
+      userName: this.Patients.find(p => p.id === appt.applicationUserId)?.userName || '',
       caseId: appt.caseId
     };
 
@@ -208,6 +190,30 @@ export class SchedulerComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error saving appointment:', err);
+      }
+    });
+  }
+
+  deleteScheduler(id: number): void {
+    this.schedulerService.deleteScheduler(id).subscribe({
+      next: () => {
+        console.log('Schedule deleted');
+        this.loadAppointments();
+      },
+      error: (err) => {
+        console.error('Failed to delete Schedule:', err);
+      }
+    });
+  }
+
+  updatescheduler(Scheduler: Scheduler): void {
+    this.schedulerService.updateScheduler(Scheduler).subscribe({
+      next: () => {
+        console.log('Schedule updated');
+        this.loadAppointments();
+      },
+      error: (err) => {
+        console.error('Failed to update Schedule:', err);
       }
     });
   }

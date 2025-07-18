@@ -23,6 +23,7 @@
     </div>
   </div>
 
+  
   <div class="main-content">
     <dx-data-grid
       [dataSource]="cases"
@@ -57,26 +58,44 @@
 
       <dxo-editing mode="popup" [allowUpdating]="true" [allowAdding]="true" [allowDeleting]="true">
         <dxo-popup title="Case Info" [showTitle]="true" [width]="500" [height]="400"></dxo-popup>
-        <dxo-form [colCount]="1">
-          <dxi-item dataField="title" editorType="dxSelectBox"
-            [editorOptions]="{ items: titlesList, placeholder: 'Select Case Title', searchEnabled: true }">
-          </dxi-item>
 
-          <dxi-item dataField="therapistName" editorType="dxSelectBox"
+        <dxo-form [colCount]="1">
+       
+          <dxi-item
+            dataField="title"
+            editorType="dxSelectBox"
+            [editorOptions]="{
+              items: titlesList,
+              placeholder: 'Select Case Title',
+              searchEnabled: true
+            }"
+          ></dxi-item>
+
+         
+          <dxi-item
+            dataField="therapistName"
+            editorType="dxSelectBox"
             [editorOptions]="{
               items: therapistsList,
               valueExpr: 'name',
               displayExpr: 'name',
               placeholder: 'Select Therapist',
               searchEnabled: true
-            }">
-          </dxi-item>
+            }"
+          ></dxi-item>
 
+         
           <dxi-item dataField="address"></dxi-item>
 
-          <dxi-item dataField="dateCreated" editorType="dxDateBox"
-            [editorOptions]="{ type: 'date', displayFormat: 'yyyy-MM-dd' }">
-          </dxi-item>
+          
+          <dxi-item
+            dataField="dateCreated"
+            editorType="dxDateBox"
+            [editorOptions]="{
+              type: 'date',
+              displayFormat: 'yyyy-MM-dd'
+            }"
+          ></dxi-item>
         </dxo-form>
       </dxo-editing>
     </dx-data-grid>
