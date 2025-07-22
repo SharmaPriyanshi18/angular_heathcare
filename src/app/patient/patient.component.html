@@ -23,7 +23,6 @@
     </div>
   </div>
 
-  
   <div class="main-content">
     <dx-data-grid
       [dataSource]="cases"
@@ -56,11 +55,20 @@
         <dxi-button name="delete" icon="trash"></dxi-button>
       </dxi-column>
 
-      <dxo-editing mode="popup" [allowUpdating]="true" [allowAdding]="true" [allowDeleting]="true">
-        <dxo-popup title="Case Info" [showTitle]="true" [width]="500" [height]="400"></dxo-popup>
+      <dxo-editing
+        mode="popup"
+        [allowUpdating]="true"
+        [allowAdding]="true"
+        [allowDeleting]="true"
+      >
+        <dxo-popup
+          title="Case Info"
+          [showTitle]="true"
+          [width]="500"
+          [height]="420"
+        ></dxo-popup>
 
         <dxo-form [colCount]="1">
-       
           <dxi-item
             dataField="title"
             editorType="dxSelectBox"
@@ -71,23 +79,20 @@
             }"
           ></dxi-item>
 
-         
           <dxi-item
-            dataField="therapistName"
+            dataField="therapistId"
             editorType="dxSelectBox"
             [editorOptions]="{
               items: therapistsList,
-              valueExpr: 'name',
               displayExpr: 'name',
+              valueExpr: 'therapistId',
               placeholder: 'Select Therapist',
               searchEnabled: true
             }"
           ></dxi-item>
 
-         
           <dxi-item dataField="address"></dxi-item>
 
-          
           <dxi-item
             dataField="dateCreated"
             editorType="dxDateBox"

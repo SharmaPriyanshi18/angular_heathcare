@@ -169,7 +169,7 @@ export class SchedulerComponent implements OnInit {
     const therapistNames = selectedTherapistIds
       .map(id => this.therapists.find(t => t.therapistId === id)?.name)
       .filter(name => !!name)
-      .join(', ');
+      .join(',');
 
     const newScheduler: Scheduler = {
       schedulerId: 0,

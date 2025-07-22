@@ -1,29 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-export class Patient {
-  id: number = 0;
-  userName: string = '';
-  email: string = '';
-  phoneNumber: string = '';
-  city: string = '';
-  state: string = '';
-  country: string = '';
-  address: string = '';
-  postalCode: string = '';
-}
+import { Patient } from '../patient';
 
 export interface Case {
-  caseId: string; 
+  caseId?: number;
   title: string;
-  therapistName: string;
-  address: string;
+  therapistId?: number;
+  therapistName?: string;
+  address?: string;
   dateCreated: string;
+  applicationUserId?: string;
 }
 
 export interface Therapist {
-  id: number;
+  therapistId: number;
   name: string;
   address: string;
 }
@@ -38,11 +29,9 @@ export class PatientComponent implements OnInit {
   selectedPatient: Patient = new Patient();
   patients: Patient[] = [];
   filteredPatientList: Patient[] = [];
-
   cases: Case[] = [];
   titlesList: string[] = [];
   therapistsList: Therapist[] = [];
-  therapistNames: string[] = [];
 
   searchText: string = '';
 
@@ -86,9 +75,7 @@ export class PatientComponent implements OnInit {
         );
         this.filteredPatientList = this.patients;
       },
-      error: (err) => {
-        console.error('Failed to load patients:', err);
-      }
+      error: (err) => console.error('Failed to load patients:', err)
     });
   }
 
@@ -96,12 +83,8 @@ export class PatientComponent implements OnInit {
     this.http.get<Case[]>('https://localhost:7209/api/Disease', {
       headers: this.getAuthHeaders()
     }).subscribe({
-      next: (data) => {
-        this.cases = data;
-      },
-      error: (err) => {
-        console.error('Failed to load cases:', err);
-      }
+      next: (data) => this.cases = data,
+      error: (err) => console.error('Failed to load cases:', err)
     });
   }
 
@@ -112,9 +95,7 @@ export class PatientComponent implements OnInit {
       next: (data) => {
         this.titlesList = [...new Set(data.map(c => c.title))];
       },
-      error: (err) => {
-        console.error('Failed to load titles:', err);
-      }
+      error: (err) => console.error('Failed to load titles:', err)
     });
   }
 
@@ -124,61 +105,75 @@ export class PatientComponent implements OnInit {
     }).subscribe({
       next: (data) => {
         this.therapistsList = data;
-        this.therapistNames = data.map(t => t.name);
         if (callback) callback();
       },
-      error: (err) => {
-        console.error('Failed to load therapists:', err);
-      }
+      error: (err) => console.error('Failed to load therapists:', err)
     });
   }
 
   onEditorPreparing(e: any) {
-    if (e.parentType === 'dataRow') {
-      if (e.dataField === 'title') {
-        e.editorOptions.items = this.titlesList;
-        e.editorOptions.searchEnabled = true;
-        e.editorOptions.placeholder = 'Select Case Title';
-      }
-
-      if (e.dataField === 'therapistName') {
-        e.editorOptions.items = this.therapistsList;
-        e.editorOptions.valueExpr = 'name';
-        e.editorOptions.displayExpr = 'name';
-        e.editorOptions.searchEnabled = true;
-        e.editorOptions.placeholder = 'Select Therapist';
-
-        e.editorOptions.onValueChanged = (args: any) => {
-          const formData = e.component.option('formData');
-          const selected = this.therapistsList.find(t => t.name === args.value);
+    if (e.dataField === 'therapistId' && e.parentType === 'dataRow') {
+      e.editorOptions = {
+        items: this.therapistsList,
+        displayExpr: 'name',
+        valueExpr: 'therapistId', 
+        placeholder: 'Select Therapist',
+        searchEnabled: true,
+        onValueChanged: (args: any) => {
+          e.setValue(args.value);
+          const selected = this.therapistsList.find(t => t.therapistId === args.value);
           if (selected) {
-            formData.therapistName = selected.name; 
-            formData.address = selected.address;    
+            const formData = e.component.option('formData');
+            formData.therapistName = selected.name;
+            formData.address = selected.address;
           }
-        };
-      }
+        }
+      };
     }
   }
 
   onInitNewRow(e: any) {
+    const userId = localStorage.getItem('userId');
     e.data = {
       title: '',
+      therapistId: 0,
       therapistName: '',
       address: '',
-      dateCreated: new Date().toISOString().split('T')[0]
+      dateCreated: new Date().toISOString(),
+      applicationUserId: userId
     };
   }
 
   onRowInserted(e: any) {
-    this.upsertCase(e.data);
+    this.prepareCaseAndUpsert(e.data);
   }
 
   onRowUpdated(e: any) {
-    this.upsertCase(e.data);
+    this.prepareCaseAndUpsert(e.data);
   }
 
-  upsertCase(caseData: Case) {
-    this.http.post('https://localhost:7209/api/Disease/Upsert', caseData, {
+  prepareCaseAndUpsert(data: any): void {
+    debugger;
+    const userId = localStorage.getItem('userId');
+
+    if (!data.therapistId || data.therapistId === 0) {
+      alert('Please select a valid therapist.');
+      return;
+    }
+
+    const selectedTherapist = this.therapistsList.find(t => t.therapistId === data.therapistId);
+
+    const payload: Case = {
+      caseId: typeof data.caseId === 'number' ? data.caseId : undefined,
+      title: data.title,
+      therapistId: selectedTherapist?.therapistId || 0,
+      therapistName: selectedTherapist?.name || '',
+      address: selectedTherapist?.address || '',
+      dateCreated: data.dateCreated || new Date().toISOString(),
+      applicationUserId: userId || ''
+    };
+
+    this.http.post('https://localhost:7209/api/Disease/Upsert', payload, {
       headers: this.getAuthHeaders()
     }).subscribe({
       next: () => this.loadCases(),
@@ -194,9 +189,7 @@ export class PatientComponent implements OnInit {
     this.http.delete(`https://localhost:7209/api/Disease/${caseId}`, {
       headers: this.getAuthHeaders()
     }).subscribe({
-      next: () => {
-        this.loadCases();
-      },
+      next: () => this.loadCases(),
       error: err => {
         console.error('Delete failed:', err);
         alert('Delete failed!');
