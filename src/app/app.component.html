@@ -12,12 +12,7 @@
   ></dx-button>
 
   <div *ngIf="isLoggedIn" class="user-info">
-    <img
-      *ngIf="userImageUrl"
-      [src]="userImageUrl"
-      alt="User Image"
-      class="user-circle"
-    />
+    <img *ngIf="userImageUrl" [src]="userImageUrl" alt="User Image" class="user-circle" />
     <dx-button
       text="Logout"
       icon="runner"
@@ -32,15 +27,22 @@
 <div class="main-container">
   <div class="app-container">
     <div class="sidebar" [ngClass]="{ 'collapsed': !isSidebarOpen }">
-      <nav class="nav-links">
-        <a routerLink="/dashboard" routerLinkActive="active-link" class="nav-link">Dashboard</a>
-        <a routerLink="/dashboardpatient" routerLinkActive="active-link" class="nav-link">Dashboard-Patient</a>
-        <a routerLink="/patient" routerLinkActive="active-link" class="nav-link">Patient</a>
-        <a routerLink="/therapist" routerLinkActive="active-link" class="nav-link">Therapist</a>
-        <a routerLink="/scheduler" routerLinkActive="active-link" class="nav-link">Scheduler</a>
-      </nav>
+<nav class="nav-links">
+  <ng-container *ngIf="isAdmin()">
+    <a routerLink="/dashboard" routerLinkActive="active-link" class="nav-link">Dashboard</a>
+    <a routerLink="/patient" routerLinkActive="active-link" class="nav-link">Patient</a>
+    <a routerLink="/therapist" routerLinkActive="active-link" class="nav-link">Therapist</a>
+    <a routerLink="/scheduler" routerLinkActive="active-link" class="nav-link">Scheduler</a>
+  </ng-container>
+  <ng-container *ngIf="isPatient()">
+    <a routerLink="/dashboardpatient" routerLinkActive="active-link" class="nav-link">Dashboard-Patient</a>
+    <a routerLink="/appointment" routerLinkActive="active-link" class="nav-link">Patient Appointment</a>
+  </ng-container>
+  <ng-container *ngIf="isNotLogin()">
+    <a routerLink="/dashboardpatient" routerLinkActive="active-link" class="nav-link">Dashboard-Patient</a>
+  </ng-container>
+</nav>
     </div>
-
     <div class="main-content">
       <div class="hamburger" (click)="toggleSidebar()">🧑‍⚕️</div>
       <router-outlet></router-outlet>
@@ -64,32 +66,15 @@
 
       <div class="text-left mb-4">
         <label class="block font-medium mb-1">Username</label>
-        <dx-text-box
-          [(value)]="loginData.username"
-          placeholder="Enter Username"
-          stylingMode="outlined"
-          class="w-full"
-        ></dx-text-box>
+        <dx-text-box [(value)]="loginData.username" placeholder="Enter Username" stylingMode="outlined" class="w-full"></dx-text-box>
       </div>
 
       <div class="text-left mb-4">
         <label class="block font-medium mb-1">Password</label>
-        <dx-text-box
-          [(value)]="loginData.password"
-          [mode]="'password'"
-          placeholder="Enter Password"
-          stylingMode="outlined"
-          class="w-full"
-        ></dx-text-box>
+        <dx-text-box [(value)]="loginData.password" [mode]="'password'" placeholder="Enter Password" stylingMode="outlined" class="w-full"></dx-text-box>
       </div>
 
-      <dx-button
-        text="Login"
-        type="default"
-        stylingMode="contained"
-        width="100%"
-        (onClick)="onLogin()"
-      ></dx-button>
+      <dx-button text="Login" type="default" stylingMode="contained" width="100%" (onClick)="onLogin()"></dx-button>
     </div>
   </dx-popup>
 </div>

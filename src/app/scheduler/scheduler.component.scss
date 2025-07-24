@@ -28,35 +28,19 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* Optional: Better scroll and spacing */
+/* Make cell spacing clean */
 ::ng-deep .dx-scheduler-date-table-cell {
   padding: 10px;
+  background-color: #ffffff;
+  border-color: #e0e0e0;
 }
 
-/* Optional: Appointment template style */
-.appointment-card {
-  background: #e3f2fd;
-  padding: 6px 10px;
-  border-left: 4px solid #2196f3;
-  border-radius: 6px;
-  font-size: 13px;
-  color: #0d47a1;
-}
-
-.appt-title {
-  font-weight: bold;
-}
-
-.appt-time {
-  font-size: 12px;
-  color: #37474f;
-}
-// ::ng-deep .dx-item.dx-box-item {
-//     flex: 31 1 0px !important;
-// }
-::ng-deep .dx-widget.dx-collection.dx-responsivebox-screen-lg.dx-responsivebox{
+/* Responsive scheduler width fix */
+::ng-deep .dx-widget.dx-collection.dx-responsivebox-screen-lg.dx-responsivebox {
   width: 140% !important;
 }
+
+/* Scheduler base style */
 ::ng-deep .dx-scheduler {
   font-family: 'Segoe UI', sans-serif;
   font-size: 14px;
@@ -64,6 +48,7 @@
   border-radius: 12px;
 }
 
+/* Time and date headers */
 ::ng-deep .dx-scheduler-header-panel-cell {
   background-color: #3498db;
   color: #ffffff;
@@ -77,11 +62,7 @@
   font-weight: 600;
 }
 
-::ng-deep .dx-scheduler-date-table-cell {
-  background-color: #ffffff;
-  border-color: #e0e0e0;
-}
-
+/* Appointment container */
 ::ng-deep .dx-scheduler-appointment {
   background: linear-gradient(135deg, #74ebd5 0%, #acb6e5 100%);
   border-radius: 10px;
@@ -89,19 +70,48 @@
   font-size: 13px;
   padding: 5px 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  min-height: 48px !important;
+  height: auto !important;
+  overflow: visible !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-::ng-deep .dx-scheduler-navigator {
-  background-color: #ffffff;
-  border-bottom: 1px solid #ccc;
+/* Your custom template content */
+.appointment-card {
+  white-space: normal;
+  overflow: visible;
+  padding: 6px 8px;
+  background-color: #e3f2fd;
+  border-left: 4px solid #2196f3;
+  border-radius: 6px;
+  color: #0d47a1;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
 }
 
-::ng-deep .dx-button {
-  border-radius: 8px !important;
-  font-size: 14px;
-  font-weight: 600;
+.appt-title {
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 4px;
 }
 
+.appt-title-above {
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 2px;
+  color: #1976d2;
+  text-align: left;
+}
+
+.appt-time {
+  font-size: 12px;
+  color: #37474f;
+}
+
+/* Popup & Button Styling */
 ::ng-deep .dx-popup-content .dx-field-label {
   font-weight: 600;
   color: #2c3e50;
@@ -115,11 +125,27 @@
 
 ::ng-deep .dx-popup-content .dx-button {
   border-radius: 6px;
-  background-color: #3498db;
-  color: white;
   font-weight: bold;
 }
 
 ::ng-deep .dx-popup-content .dx-button.dx-button-normal {
   background-color: #95a5a6;
+  color: white;
+}
+
+::ng-deep .dx-popup-content .dx-button.dx-button-default {
+  background-color: #3498db;
+  color: white;
+}
+
+/* Nav and controls */
+::ng-deep .dx-scheduler-navigator {
+  background-color: #ffffff;
+  border-bottom: 1px solid #ccc;
+}
+
+::ng-deep .dx-button {
+  border-radius: 8px !important;
+  font-size: 14px;
+  font-weight: 600;
 }

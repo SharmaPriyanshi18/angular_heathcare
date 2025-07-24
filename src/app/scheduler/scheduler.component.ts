@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { SchedulerService } from '../scheduler.service';
 import * as moment from 'moment';
 
@@ -8,12 +8,15 @@ export class Scheduler {
   dateTo!: Date;
   title!: string;
   applicationUserId!: string;
-  therapistIds: string = ''; 
+  therapistIds: string = '';
   therapistNames?: string;
   userName?: string;
   startDate?: Date;
   endDate?: Date;
   caseId?: number;
+  text?: string;
+  id?: number;
+  mappedData?: string[];
 }
 
 @Component({
@@ -38,51 +41,46 @@ export class SchedulerComponent implements OnInit {
     this.loadCases();
   }
 
-  loadAppointments(): void {
+loadAppointments(): void {
     this.schedulerService.getScheduler().subscribe({
       next: (data: Scheduler[]) => {
-        this.appointments = data.map((item) => ({
-          ...item,
-          startDate: moment.utc(item.dateFrom).local().toDate(),
-          endDate: moment.utc(item.dateTo).local().toDate()
-        }));
+        this.appointments = data.map((item) => {
+          const mapped = item.title?.split(',').map((t) => t.trim()) ?? [];
+
+          return {
+            ...item,
+            id: item.schedulerId,
+            startDate: moment.utc(item.dateFrom).local().toDate(),
+            endDate: moment.utc(item.dateTo).local().toDate(),
+            text: item.title, // Scheduler uses `text` to display
+            mappedData: mapped,
+          };
+        });
+
+        console.log('Loaded appointments:', this.appointments);
       },
-      error: (err) => {
-        console.error('Error loading appointments:', err);
-      }
+      error: (err) => console.error('Error loading appointments:', err),
     });
   }
-
+  
   loadTherapists(): void {
     this.schedulerService.getTherapists().subscribe({
-      next: (data) => {
-        this.therapists = data;
-      },
-      error: (err) => {
-        console.error('Error loading therapists:', err);
-      }
+      next: (data) => (this.therapists = data),
+      error: (err) => console.error('Error loading therapists:', err)
     });
   }
 
   loadPatients(): void {
     this.schedulerService.getPatients().subscribe({
-      next: (data) => {
-        this.Patients = data;
-      },
-      error: (err) => {
-        console.error('Error loading patients:', err);
-      }
+      next: (data) => (this.Patients = data),
+      error: (err) => console.error('Error loading patients:', err)
     });
   }
 
   loadCases(): void {
     this.schedulerService.getCases().subscribe({
-      next: (data) => {
-        this.Cases = data;
-      },
-      error: (err) => {
-        console.error('Error loading cases:', err);
-      }
+      next: (data) => (this.Cases = data),
+      error: (err) => console.error('Error loading cases:', err)
     });
   }
 
@@ -177,7 +175,7 @@ export class SchedulerComponent implements OnInit {
       dateTo: appt.endDate,
       title: this.Cases.find(c => c.caseId === appt.caseId)?.title || '',
       applicationUserId: appt.applicationUserId,
-      therapistIds: selectedTherapistIds.join(','), 
+      therapistIds: selectedTherapistIds.join(','),
       therapistNames: therapistNames,
       userName: this.Patients.find(p => p.id === appt.applicationUserId)?.userName || '',
       caseId: appt.caseId
@@ -194,26 +192,36 @@ export class SchedulerComponent implements OnInit {
     });
   }
 
-  deleteScheduler(id: number): void {
-    this.schedulerService.deleteScheduler(id).subscribe({
-      next: () => {
-        console.log('Schedule deleted');
-        this.loadAppointments();
-      },
-      error: (err) => {
-        console.error('Failed to delete Schedule:', err);
-      }
-    });
-  }
-
-  updatescheduler(Scheduler: Scheduler): void {
-    this.schedulerService.updateScheduler(Scheduler).subscribe({
+  updatescheduler(scheduler: Scheduler): void {
+    this.schedulerService.updateScheduler(scheduler).subscribe({
       next: () => {
         console.log('Schedule updated');
         this.loadAppointments();
       },
       error: (err) => {
         console.error('Failed to update Schedule:', err);
+      }
+    });
+  }
+
+  onDeleteClick(appointment: Scheduler): void {
+    const schedulerId = appointment.schedulerId ? appointment.schedulerId : appointment.id;
+
+    if (!schedulerId) {
+      console.warn('No schedulerId found in appointment:', appointment);
+      return;
+    }
+
+    const confirmed = confirm('Are you sure you want to delete this appointment?');
+    if (!confirmed) return;
+
+    this.schedulerService.deleteScheduler(schedulerId).subscribe({
+      next: () => {
+        console.log('Manual delete success');
+        this.loadAppointments();
+      },
+      error: (err) => {
+        console.error('Manual delete failed:', err);
       }
     });
   }

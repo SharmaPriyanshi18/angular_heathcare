@@ -19,8 +19,8 @@ export class SchedulerService {
     return this.http.post<Scheduler>("https://localhost:7209/api/Scheduler/Update", Scheduler);
   }
   deleteScheduler(id: number): Observable<any> {
-    return this.http.delete<any>("https://localhost:7209/api/Scheduler/" + id);
-}
+    return this.http.delete<any>("https://localhost:7209/api/scheduler/delete/" + id);
+  }
   getTherapists(): Observable<any> {
     return this.http.get<any>("https://localhost:7209/api/Therapist");
   }
@@ -30,4 +30,5 @@ export class SchedulerService {
   getCases(): Observable<any> {
     return this.http.get<any>("https://localhost:7209/api/Disease");
   }
+
 }

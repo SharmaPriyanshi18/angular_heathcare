@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DxListComponent } from "devextreme-angular/ui/list";
+import { AppointmentComponent } from './appointment/appointment.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { DxListComponent } from "devextreme-angular/ui/list";
     TherapistComponent,
     DashboardpatientComponent,
     SchedulerComponent,
+    AppointmentComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,10 +52,10 @@ import { DxListComponent } from "devextreme-angular/ui/list";
     DxPieChartModule,
     DxMapModule,
     DxSelectBoxModule,
-    DxDateBoxModule,
     DxSchedulerModule,
     DxListComponent
 ],
+
   providers: [],
   bootstrap: [AppComponent]
 })

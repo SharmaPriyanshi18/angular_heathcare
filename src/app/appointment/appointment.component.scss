@@ -1,0 +1,63 @@
+.appointment-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+  padding: 24px;
+}
+
+.accent-card {
+  position: relative;
+  display: flex;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+
+  .accent-strip {
+    width: 8px;
+    background: linear-gradient(to bottom, #0078d7, #00c6ff);
+  }
+
+  .card-content {
+    padding: 16px 20px;
+    flex: 1;
+  }
+
+  .title {
+    margin-top: 0;
+    color: #0078d7;
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .card-item {
+    margin-bottom: 10px;
+    font-size: 14px;
+
+    strong {
+      color: #444;
+    }
+  }
+
+  .therapist-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 8px 0 12px;
+  }
+
+  .therapist-chip {
+    background-color: #e6f3ff;
+    color: #0078d7;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 1px 3px rgba(0, 120, 215, 0.2);
+  }
+}

@@ -116,7 +116,7 @@ export class PatientComponent implements OnInit {
       e.editorOptions = {
         items: this.therapistsList,
         displayExpr: 'name',
-        valueExpr: 'therapistId', 
+        valueExpr: 'therapistId',
         placeholder: 'Select Therapist',
         searchEnabled: true,
         onValueChanged: (args: any) => {
@@ -133,7 +133,7 @@ export class PatientComponent implements OnInit {
   }
 
   onInitNewRow(e: any) {
-    const userId = localStorage.getItem('userId');
+    const userId = localStorage.getItem('ApplicationUserId');
     e.data = {
       title: '',
       therapistId: 0,
@@ -152,28 +152,13 @@ export class PatientComponent implements OnInit {
     this.prepareCaseAndUpsert(e.data);
   }
 
-  prepareCaseAndUpsert(data: any): void {
-    debugger;
-    const userId = localStorage.getItem('userId');
-
+  prepareCaseAndUpsert(data: Case): void {
     if (!data.therapistId || data.therapistId === 0) {
       alert('Please select a valid therapist.');
       return;
     }
 
-    const selectedTherapist = this.therapistsList.find(t => t.therapistId === data.therapistId);
-
-    const payload: Case = {
-      caseId: typeof data.caseId === 'number' ? data.caseId : undefined,
-      title: data.title,
-      therapistId: selectedTherapist?.therapistId || 0,
-      therapistName: selectedTherapist?.name || '',
-      address: selectedTherapist?.address || '',
-      dateCreated: data.dateCreated || new Date().toISOString(),
-      applicationUserId: userId || ''
-    };
-
-    this.http.post('https://localhost:7209/api/Disease/Upsert', payload, {
+    this.http.post('https://localhost:7209/api/Disease/Upsert', data, {
       headers: this.getAuthHeaders()
     }).subscribe({
       next: () => this.loadCases(),

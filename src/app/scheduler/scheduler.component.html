@@ -16,7 +16,7 @@
       [height]="650"
       [cellDuration]="30"
       [showAllDayPanel]="false"
-      [appointmentTemplate]="customAppointment"
+      [appointmentTemplate]="'Patient'"
       (onAppointmentAdding)="onAppointmentAdding($event)"
       (onAppointmentFormOpening)="onAppointmentFormOpening($event)"
     >
@@ -26,9 +26,20 @@
 
 <ng-template #customAppointment let-data="data">
   <div class="appointment-card">
-    <div class="appt-title">{{ data.text }}</div>
-    <div class="appt-time">
-      {{ data.startDate | date:'shortTime' }} - {{ data.endDate | date:'shortTime' }}
+    <div class="appt-title">
+      {{ data.text || data.title }}
     </div>
+
+    <div *ngIf="data?.appointmentData?.mappedData?.length > 0" class="mapped-info">
+      👨‍⚕️ {{ data.appointmentData.mappedData.join(', ') }}
+    </div>
+
+    <div class="appt-time">
+      {{ data.startDate | date: 'shortTime' }} - {{ data.endDate | date: 'shortTime' }}
+    </div>
+
+    <button class="delete-btn" (click)="onDeleteClick(data)">
+      🗑️ Delete
+    </button>
   </div>
 </ng-template>

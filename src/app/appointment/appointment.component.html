@@ -1,0 +1,23 @@
+<div class="appointment-list">
+  <div *ngFor="let appointment of appointments" class="dx-card accent-card">
+    <div class="accent-strip"></div>
+
+    <div class="card-content">
+      <h3 class="title">{{ appointment.title }}</h3>
+
+      <div class="card-item"><strong>Patient:</strong> {{ appointment.userName }}</div>
+      <div class="card-item"><strong>Email:</strong> {{ appointment.email }}</div>
+      <div class="card-item"><strong>Address:</strong> {{ appointment.address }}</div>
+
+      <div class="card-item"><strong>Therapist(s):</strong></div>
+      <div class="therapist-tags">
+        <span class="therapist-chip" *ngFor="let name of appointment.therapistNameList">
+          {{ name }}
+        </span>
+      </div>
+
+      <div class="card-item"><strong>From:</strong> {{ appointment.startDate | date:'short' }}</div>
+      <div class="card-item"><strong>To:</strong> {{ appointment.endDate | date:'short' }}</div>
+    </div>
+  </div>
+</div>

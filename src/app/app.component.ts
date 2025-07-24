@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   isSidebarOpen: boolean = true;
   showLoginPopup: boolean = false;
   isLoggedIn: boolean = false;
-
+  userRole: string = '';
   userImageUrl: string | null = null;
 
   loginData = {
@@ -27,13 +27,14 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoggedIn = !!localStorage.getItem('token');
+    this.userRole = localStorage.getItem('userRole') || '';
 
     if (this.isLoggedIn) {
       this.setUserImageFromToken();
     }
   }
 
-  toggleSidebar() {
+  toggleSidebar(): void {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
 
@@ -59,13 +60,17 @@ export class AppComponent implements OnInit {
             localStorage.setItem('userRole', role);
             localStorage.setItem('userId', userId);
 
+            this.userRole = role;
             this.isLoggedIn = true;
             this.setUserImageFromToken();
             this.showLoginPopup = false;
+
             notify('Login successful', 'success', 2000);
 
-            if (role === 'Admin' || role === 'Patient') {
+            if (role === 'Admin') {
               this.router.navigate(['/dashboard']);
+            } else {
+              this.router.navigate(['/dashboardpatient']);
             }
           } catch (error) {
             notify('Failed to decode token.', 'error', 3000);
@@ -99,9 +104,24 @@ export class AppComponent implements OnInit {
     localStorage.removeItem('token');
     localStorage.removeItem('userRole');
     localStorage.removeItem('userId');
+
     this.isLoggedIn = false;
+    this.userRole = '';
     this.userImageUrl = null;
+    this.loginData = { username: '', password: '' };
+
     this.router.navigate(['/']);
     notify('Logged out successfully', 'info', 2000);
+  }
+
+  isPatient(): boolean {
+    return this.userRole === 'Patient';
+  }
+
+  isAdmin(): boolean {
+    return this.userRole === 'Admin';
+  }
+  isNotLogin(): boolean {
+    return !this.isLoggedIn;
   }
 }
