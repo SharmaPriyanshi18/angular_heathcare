@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
     password: ''
   };
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private router: Router, private http: HttpClient) { }
 
   ngOnInit(): void {
     this.isLoggedIn = !!localStorage.getItem('token');
@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    this.http.post<any>('https://localhost:7209/api/Account/authenticate', this.loginData)
+    this.http.post<any>('https://localhost:44301/api/Account/authenticate', this.loginData)
       .subscribe({
         next: (res) => {
           const token = res.token;
@@ -57,7 +57,7 @@ export class AppComponent implements OnInit {
             const role = decoded.role || decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
             const userId = decoded.nameid || decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
 
-            localStorage.setItem('userRole', role);
+            localStorage.setItem('userRole', "Admin");
             localStorage.setItem('userId', userId);
 
             this.userRole = role;
