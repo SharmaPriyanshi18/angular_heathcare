@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SchedulerService } from '../scheduler.service';
+import { SchedulerService } from '../services/scheduler.service';
 import moment from 'moment';
 
 @Component({
@@ -11,7 +11,7 @@ import moment from 'moment';
 export class AppointmentComponent {
   appointments: any[] = [];
 
-  constructor(private schedulerService: SchedulerService) {}
+  constructor(private schedulerService: SchedulerService) { }
 
   ngOnInit(): void {
     this.loadAppointments();

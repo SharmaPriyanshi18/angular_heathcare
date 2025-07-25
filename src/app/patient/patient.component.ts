@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Patient } from '../patient';
+import { Patient } from '../interfaces/patient.interface';
 
 export interface Case {
   caseId?: number;
@@ -35,7 +35,7 @@ export class PatientComponent implements OnInit {
 
   searchText: string = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
     const token = localStorage.getItem('token');

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { TherapistService } from '../therapist.service';
+import { TherapistService } from '../services/therapist.service';
 
 export class Therapist {
   therapistId?: number;
@@ -17,7 +17,7 @@ export class Therapist {
   templateUrl: './therapist.component.html',
   styleUrl: './therapist.component.scss'
 })
-export class TherapistComponent implements OnInit {  
+export class TherapistComponent implements OnInit {
   therapists: Therapist[] = [];
 
   showAddPopup: boolean = false;
@@ -33,7 +33,7 @@ export class TherapistComponent implements OnInit {
     private http: HttpClient,
     private router: Router,
     private therapistService: TherapistService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadTherapists();

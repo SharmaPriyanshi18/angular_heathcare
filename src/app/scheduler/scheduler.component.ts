@@ -1,5 +1,5 @@
-import { Component, OnInit} from '@angular/core';
-import { SchedulerService } from '../scheduler.service';
+import { Component, OnInit } from '@angular/core';
+import { SchedulerService } from '../services/scheduler.service';
 import * as moment from 'moment';
 
 export class Scheduler {
@@ -32,7 +32,7 @@ export class SchedulerComponent implements OnInit {
   Patients: any[] = [];
   Cases: any[] = [];
 
-  constructor(private schedulerService: SchedulerService) {}
+  constructor(private schedulerService: SchedulerService) { }
 
   ngOnInit(): void {
     this.loadAppointments();
@@ -41,7 +41,7 @@ export class SchedulerComponent implements OnInit {
     this.loadCases();
   }
 
-loadAppointments(): void {
+  loadAppointments(): void {
     this.schedulerService.getScheduler().subscribe({
       next: (data: Scheduler[]) => {
         this.appointments = data.map((item) => {
@@ -62,7 +62,7 @@ loadAppointments(): void {
       error: (err) => console.error('Error loading appointments:', err),
     });
   }
-  
+
   loadTherapists(): void {
     this.schedulerService.getTherapists().subscribe({
       next: (data) => (this.therapists = data),
