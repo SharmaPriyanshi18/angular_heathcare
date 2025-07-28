@@ -1,5 +1,4 @@
 <div class="app-patient">
-  <!-- Search Panel -->
   <div class="scroll-bar">
     <input
       type="text"
@@ -9,7 +8,6 @@
       (ngModelChange)="onSearchChange()"
     />
 
-    <!-- Patient Card List -->
     <div class="dx-card-container scrollable-list">
       <div *ngFor="let patient of filteredPatientList" class="dx-card">
         <div class="dx-card-header">
@@ -25,7 +23,6 @@
     </div>
   </div>
 
-  <!-- Data Grid for Cases -->
   <div class="main-content">
     <dx-data-grid
       [dataSource]="cases"
@@ -41,19 +38,15 @@
       (onRowUpdated)="onRowUpdated($event)"
       (onRowRemoved)="onRowRemoved($event)"
     >
-      <!-- Toolbar -->
       <dxo-toolbar>
         <dxi-item location="after" name="addRowButton"></dxi-item>
       </dxo-toolbar>
 
-      <!-- Filtering Options -->
       <dxo-filter-row [visible]="true"></dxo-filter-row>
       <dxo-header-filter [visible]="true"></dxo-header-filter>
 
-      <!-- Columns -->
       <dxi-column dataField="title" caption="Case Title"></dxi-column>
       <dxi-column dataField="therapistName" caption="Therapist Name"></dxi-column>
-      <dxi-column dataField="address" caption="Address"></dxi-column>
       <dxi-column
         dataField="dateCreated"
         caption="Date"
@@ -61,13 +54,11 @@
         format="yyyy-MM-dd"
       ></dxi-column>
 
-      <!-- Action Buttons -->
       <dxi-column type="buttons">
         <dxi-button name="edit" icon="edit"></dxi-button>
         <dxi-button name="delete" icon="trash"></dxi-button>
       </dxi-column>
 
-      <!-- Editing Configuration -->
       <dxo-editing
         mode="popup"
         [allowUpdating]="true"
@@ -81,13 +72,14 @@
           [height]="420"
         ></dxo-popup>
 
-        <!-- Form Layout -->
         <dxo-form [colCount]="1">
           <dxi-item
             dataField="title"
             editorType="dxSelectBox"
             [editorOptions]="{
+              displayExpr: 'title',
               items: titlesList,
+               valueExpr: 'id',
               placeholder: 'Select Case Title',
               searchEnabled: true
             }"
@@ -105,7 +97,7 @@
             }"
           ></dxi-item>
 
-          <dxi-item dataField="address"></dxi-item>
+          <!-- <dxi-item dataField="address"></dxi-item> -->
 
           <dxi-item
             dataField="dateCreated"

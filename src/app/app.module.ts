@@ -30,7 +30,7 @@ import { AppointmentComponent } from './appointment/appointment.component';
     TherapistComponent,
     DashboardpatientComponent,
     SchedulerComponent,
-    AppointmentComponent,
+    AppointmentComponent
   ],
   imports: [
     BrowserModule,

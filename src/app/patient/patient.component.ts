@@ -8,8 +8,7 @@ export interface Case {
   title: string;
   therapistId?: number;
   therapistName?: string;
-  address?: string;
-  dateCreated: string;
+ dateCreated: string;
   applicationUserId?: string;
 }
 
@@ -30,7 +29,7 @@ export class PatientComponent implements OnInit {
   patients: Patient[] = [];
   filteredPatientList: Patient[] = [];
   cases: Case[] = [];
-  titlesList: string[] = [];
+  titlesList: any[] = [];
   therapistsList: Therapist[] = [];
 
   searchText: string = '';
@@ -80,7 +79,7 @@ export class PatientComponent implements OnInit {
   }
 
   loadCases(): void {
-    this.http.get<Case[]>('https://localhost:7209/api/Disease', {
+    this.http.get<Case[]>('https://localhost:7209/api/Case', {
       headers: this.getAuthHeaders()
     }).subscribe({
       next: (data) => this.cases = data,
@@ -89,11 +88,12 @@ export class PatientComponent implements OnInit {
   }
 
   loadTitles(): void {
-    this.http.get<Case[]>('https://localhost:7209/api/Disease', {
+    this.http.get<Case[]>('https://localhost:7209/api/Case', {
       headers: this.getAuthHeaders()
     }).subscribe({
       next: (data) => {
-        this.titlesList = [...new Set(data.map(c => c.title))];
+        this.titlesList = [...(data.map(c => { return { title: c.title ,id : c.caseId}; }))];
+        console.log('Loaded titles:', this.titlesList);
       },
       error: (err) => console.error('Failed to load titles:', err)
     });
@@ -104,6 +104,7 @@ export class PatientComponent implements OnInit {
       headers: this.getAuthHeaders()
     }).subscribe({
       next: (data) => {
+        console.log(data);
         this.therapistsList = data;
         if (callback) callback();
       },
@@ -125,7 +126,6 @@ export class PatientComponent implements OnInit {
           if (selected) {
             const formData = e.component.option('formData');
             formData.therapistName = selected.name;
-            formData.address = selected.address;
           }
         }
       };
@@ -138,7 +138,6 @@ export class PatientComponent implements OnInit {
       title: '',
       therapistId: 0,
       therapistName: '',
-      address: '',
       dateCreated: new Date().toISOString(),
       applicationUserId: userId
     };
@@ -158,7 +157,7 @@ export class PatientComponent implements OnInit {
       return;
     }
 
-    this.http.post('https://localhost:7209/api/Disease/Upsert', data, {
+    this.http.post('https://localhost:7209/api/Case', data, {
       headers: this.getAuthHeaders()
     }).subscribe({
       next: () => this.loadCases(),
@@ -171,7 +170,7 @@ export class PatientComponent implements OnInit {
 
   onRowRemoved(e: any) {
     const caseId = e.data.caseId;
-    this.http.delete(`https://localhost:7209/api/Disease/${caseId}`, {
+    this.http.delete(`https://localhost:7209/api/Case/${caseId}`, {
       headers: this.getAuthHeaders()
     }).subscribe({
       next: () => this.loadCases(),

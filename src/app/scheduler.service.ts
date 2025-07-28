@@ -30,5 +30,4 @@ export class SchedulerService {
   getCases(): Observable<any> {
     return this.http.get<any>("https://localhost:7209/api/Disease");
   }
-
 }
