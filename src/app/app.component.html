@@ -28,21 +28,20 @@
   <div class="app-container">
     <div class="sidebar" [ngClass]="{ 'collapsed': !isSidebarOpen }">
 <nav class="nav-links">
-  <ng-container *ngIf="isAdmin()">
+  <!-- <ng-container *ngIf="isAdmin()"> -->
     <a routerLink="/dashboard" routerLinkActive="active-link" class="nav-link">Dashboard</a>
     <a routerLink="/patient" routerLinkActive="active-link" class="nav-link">Patient</a>
     <a routerLink="/therapist" routerLinkActive="active-link" class="nav-link">Therapist</a>
     <a routerLink="/scheduler" routerLinkActive="active-link" class="nav-link">Scheduler</a>
-    <!-- <a routerLink="/notedetail" routerLinkActive="active-link" class="nav-link">Note Detail</a> -->
-     <a routerLink="/notedetail" routerLinkActive="active-link" class="nav-link">Note</a>
-  </ng-container>
+    <a routerLink="/notedetail" routerLinkActive="active-link" class="nav-link">Note Detail</a>
+  <!-- </ng-container> -->
   <ng-container *ngIf="isPatient()">
     <a routerLink="/dashboardpatient" routerLinkActive="active-link" class="nav-link">Dashboard-Patient</a>
     <a routerLink="/appointment" routerLinkActive="active-link" class="nav-link">Patient Appointment</a>
   </ng-container>
-  <ng-container *ngIf="isNotLogin()">
+  <!-- <ng-container *ngIf="isNotLogin()"> -->
     <a routerLink="/dashboardpatient" routerLinkActive="active-link" class="nav-link">Dashboard-Patient</a>
-  </ng-container>
+  <!-- </ng-container> -->
 </nav>
     </div>
     <div class="main-content">

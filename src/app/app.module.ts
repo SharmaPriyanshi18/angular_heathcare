@@ -10,7 +10,7 @@ import { TherapistComponent } from './therapist/therapist.component';
 import { DashboardpatientComponent } from './dashboardpatient/dashboardpatient.component';
 import { SchedulerComponent } from './scheduler/scheduler.component';
 
-import { DxButtonModule, DxChartModule, DxDataGridModule, DxDateBoxModule, DxFormModule, DxMapModule, DxPieChartModule, DxPopupModule, DxSelectBoxModule, DxTextAreaModule, DxTextBoxModule, DxToolbarModule, DxValidatorModule } from 'devextreme-angular';
+import { DxButtonModule, DxChartModule, DxDataGridModule, DxDateBoxModule, DxFormModule, DxMapModule, DxPieChartModule, DxPopupModule, DxSelectBoxModule, DxTabPanelModule, DxTextAreaModule, DxTextBoxModule, DxToolbarModule, DxValidatorModule } from 'devextreme-angular';
 import { DxSchedulerModule } from 'devextreme-angular/ui/scheduler';
 
 import { RouterModule } from '@angular/router';
@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DxListComponent } from "devextreme-angular/ui/list";
 import { AppointmentComponent } from './appointment/appointment.component';
+import { NotedetailComponent } from './notedetail/notedetail.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { AppointmentComponent } from './appointment/appointment.component';
     TherapistComponent,
     DashboardpatientComponent,
     SchedulerComponent,
-    AppointmentComponent
+    AppointmentComponent,
+    NotedetailComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +55,8 @@ import { AppointmentComponent } from './appointment/appointment.component';
     DxMapModule,
     DxSelectBoxModule,
     DxSchedulerModule,
-    DxListComponent
+    DxListComponent,
+    DxTabPanelModule
 ],
 
   providers: [],

@@ -7,6 +7,7 @@ import { TherapistComponent } from './therapist/therapist.component';
 import { DashboardpatientComponent } from './dashboardpatient/dashboardpatient.component';
 import { SchedulerComponent } from './scheduler/scheduler.component';
 import { AppointmentComponent } from './appointment/appointment.component';
+import { NotedetailComponent } from './notedetail/notedetail.component';
 
 const routes: Routes = [
     {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
@@ -17,7 +18,7 @@ const routes: Routes = [
   {path:'dashboardpatient',component:DashboardpatientComponent},
   {path:'scheduler',component:SchedulerComponent},
   {path:'appointment',component:AppointmentComponent},
-  // {path:'notedetail',component:NotedetailComponent}
+  {path:'notedetail',component:NotedetailComponent}
 ];
 
 @NgModule({

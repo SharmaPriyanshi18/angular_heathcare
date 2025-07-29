@@ -1,0 +1,122 @@
+.card {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  font-family: 'Segoe UI', sans-serif;
+
+  .title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 10px;
+  }
+
+  .custom-tabs {
+    margin-bottom: 20px;
+
+    ::ng-deep .dx-tab {
+      font-size: 16px;
+      padding: 10px 20px;
+      transition: all 0.3s ease;
+    }
+
+    ::ng-deep .dx-tab-selected {
+      color: #2563eb;
+      font-weight: 600;
+      border-bottom: 3px solid #2563eb;
+      background-color: #f0f6ff;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+    }
+  }
+
+  .add-btn {
+    margin-bottom: 15px;
+    background-color: #2563eb !important;
+    color: #fff !important;
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 8px 16px;
+  }
+
+  .details {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f9fafb;
+    border-left: 4px solid #2563eb;
+    border-radius: 8px;
+
+    h4 {
+      margin-top: 0;
+      color: #2563eb;
+    }
+
+    p {
+      margin: 6px 0;
+      font-size: 15px;
+    }
+  }
+
+  .placeholder {
+    padding: 20px;
+    color: #6b7280;
+    font-style: italic;
+  }
+}
+
+.report-btn {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+  color: #374151;
+  font-weight: 500;
+}
+
+.report-card {
+  margin-top: 15px;
+  padding: 20px;
+  border: 1px solid #d1d5db;
+  background-color: #fefefe;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+
+  h4 {
+    color: #111827;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin: 6px 0;
+    line-height: 1.5;
+    font-size: 15px;
+  }
+}
+
+::ng-deep .dx-datagrid {
+  font-size: 14px;
+
+  .dx-datagrid-headers {
+    background-color: #f3f4f6;
+  }
+
+  .dx-command-edit .dx-link {
+    margin: 0 4px;
+  }
+
+  .dx-link {
+    color: #2563eb;
+    font-weight: 500;
+  }
+
+  .dx-button {
+    border-radius: 6px;
+  }
+}

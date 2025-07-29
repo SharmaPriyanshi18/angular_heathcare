@@ -1,26 +1,113 @@
-<!-- <div class="dashboard-container">
-  <div class="filter-bar">
-    <dx-date-box [(value)]="filter.dosFrom" placeholder="DOS From"></dx-date-box>
-    <dx-date-box [(value)]="filter.dosTo" placeholder="DOS To"></dx-date-box>
-    <dx-select-box [items]="years" [(value)]="filter.dateRange" placeholder="Last Two Years"></dx-select-box>
-    <dx-select-box [items]="caseTypes" [(value)]="filter.caseType" placeholder="Case Type"></dx-select-box>
-    <dx-button text="Search" (onClick)="loadData()"></dx-button>
+<div class="card">
+  <h2 class="title">Assessment & Billing</h2>
+
+  <!-- Tab Panel -->
+  <dx-tab-panel
+    [items]="tabs"
+    [selectedIndex]="selectedTab"
+    (selectedIndexChange)="onTabChange($event)"
+    [animationEnabled]="true"
+    class="custom-tabs"
+  ></dx-tab-panel>
+
+  <!-- ASSESSMENT TAB -->
+  <div *ngIf="selectedTab === 0" class="tab-content">
+    <dx-button
+      text="Add Assessment"
+      icon="plus"
+      stylingMode="contained"
+      type="default"
+      class="add-btn"
+      (onClick)="add()"
+    ></dx-button>
+
+    <dx-data-grid
+      [dataSource]="assessments"
+      [showBorders]="true"
+      [columnAutoWidth]="true"
+      [rowAlternationEnabled]="true"
+      [hoverStateEnabled]="true"
+      (onRowClick)="select($event.data)"
+    >
+      <dxi-column dataField="patient" caption="Patient Name"></dxi-column>
+      <dxi-column dataField="case" caption="Case Type"></dxi-column>
+      <dxi-column dataField="therapist" caption="Therapist"></dxi-column>
+      <dxi-column dataField="date" caption="Date" dataType="date"></dxi-column>
+      <dxi-column dataField="phoneNumber" caption="Phone Number"></dxi-column>
+
+      <dxi-column type="buttons" caption="Actions">
+        <dxi-button icon="edit" [onClick]="onEditClick"></dxi-button>
+        <dxi-button icon="trash" [onClick]="onDeleteClick"></dxi-button>
+      </dxi-column>
+    </dx-data-grid>
+
+    <div *ngIf="selected" class="details">
+      <h4>Assessment Details</h4>
+      <p><strong>Patient:</strong> {{ selected.patient }}</p>
+      <p><strong>Case:</strong> {{ selected.case }}</p>
+      <p><strong>Therapist:</strong> {{ selected.therapist }}</p>
+      <p><strong>Date:</strong> {{ selected.date }}</p>
+      <p><strong>Phone:</strong> {{ selected.phoneNumber }}</p>
+
+      <!-- Report Button -->
+      <dx-button
+        text="📝 View Report"
+        stylingMode="outlined"
+        type="default"
+        class="report-btn"
+        (onClick)="showReport = !showReport"
+      ></dx-button>
+
+      <dx-button
+        text="🖨 Print Report"
+        icon="print"
+        stylingMode="outlined"
+        type="default"
+        class="report-btn"
+        (onClick)="printReport()"
+      ></dx-button>
+    </div>
+    <div *ngIf="showReport" class="report-card">
+      <h4>Patient Report</h4>
+      <p><strong>Patient Name:</strong> {{ selected.patient }}</p>
+      <p><strong>Case:</strong> {{ selected.case }}</p>
+      <p><strong>Assessment Notes:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. You can replace this with real notes.</p>
+    </div>
   </div>
 
-  <div class="dashboard-panels">
-    <div class="panel">
-      <h4>Referral</h4>
-      <dx-data-grid [dataSource]="referralData" [columns]="columns" [showBorders]="true"></dx-data-grid>
-    </div>
-
-    <div class="panel">
-      <h4>A/R</h4>
-      <dx-data-grid [dataSource]="arData" [columns]="columns" [showBorders]="true"></dx-data-grid>
-    </div>
-
-    <div class="panel">
-      <h4>Follow-up</h4>
-      <dx-data-grid [dataSource]="followUpData" [columns]="columns" [showBorders]="true"></dx-data-grid>
-    </div>
+  <!-- BILLING TAB -->
+  <div *ngIf="selectedTab === 1" class="tab-content">
+    <p class="placeholder">Billing content goes here...</p>
   </div>
-</div> -->
+</div>
+
+<!--  MODAL -->
+<dx-popup
+  [(visible)]="popupVisible"
+  [showTitle]="true"
+  [title]="isEditMode ? 'Edit Assessment' : 'Add Assessment'"
+  [width]="500"
+  [height]="'auto'"
+  [dragEnabled]="true"
+>
+  <dx-form
+    [formData]="formModel"
+    [colCount]="1"
+    [labelLocation]="'top'"
+  >
+    <dxi-item dataField="patient" [isRequired]="true" label="Patient Name"></dxi-item>
+    <dxi-item dataField="case" [isRequired]="true" label="Case Type"></dxi-item>
+    <dxi-item dataField="therapist" [isRequired]="true" label="Therapist"></dxi-item>
+    <dxi-item dataField="date" editorType="dxDateBox" [isRequired]="true"></dxi-item>
+    <dxi-item dataField="phoneNumber" [isRequired]="true" label="Phone Number"></dxi-item>
+
+    <dxi-item>
+      <dx-button
+        text="Save"
+        type="default"
+        stylingMode="contained"
+        (onClick)="saveAssessment()"
+      ></dx-button>
+    </dxi-item>
+  </dx-form>
+</dx-popup>
